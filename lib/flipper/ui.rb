@@ -41,7 +41,7 @@ module Flipper
 
     def self.app(flipper = nil, options = {})
       env_key = options.fetch(:env_key, 'flipper')
-      app = ->() { [200, { 'Content-Type' => 'text/html' }, ['']] }
+      app = ->(_) { [200, { 'Content-Type' => 'text/html' }, ['']] }
       builder = Rack::Builder.new
       yield builder if block_given?
       builder.use Rack::Protection

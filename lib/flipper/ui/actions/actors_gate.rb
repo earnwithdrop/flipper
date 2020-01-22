@@ -43,7 +43,7 @@ module Flipper
           instrument_update(
             feature_flag_name: feature_name,
             gate_name: 'actors',
-            value: value
+            value: value,
             operation: params['operation']
           )
 

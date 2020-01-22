@@ -41,7 +41,7 @@ module Flipper
           end
 
           datadog&.event 'Flipper Feature Updated',
-                         "The feature flag `#{value}` had actor `#{value}` #{params['operation']}d.",
+                         "The feature flag `#{feature_name}` had actor `#{value}` #{params['operation']}d.",
                          source_type_name: 'flipper',
                          tags: %W[env:#{ENV['RACK_ENV']}]
 

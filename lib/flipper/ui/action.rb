@@ -128,7 +128,7 @@ module Flipper
 
       def instrument_update(feature_flag_name:, gate_name:, value:, operation:)
         datadog&.event 'Flipper Feature Updated',
-                       <<~TXT
+                       <<~TXT,
                          **Feature Flag**: *#{feature_flag_name}*
 
                          **Gate**: *#{gate_name}*

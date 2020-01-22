@@ -136,6 +136,8 @@ module Flipper
                          **Operation**: *#{operation}*
 
                          **Value**: *#{value}*
+
+                         @slack-Main_Account-eng-events-log
                        TXT
                        source_type_name: 'flipper',
                        tags: %W[env:#{ENV['RACK_ENV']}]

@@ -19,6 +19,13 @@ module Flipper
             feature.disable
           end
 
+          action_string = params['action'] == 'Enable' ? 'enabled' : 'disabled'
+
+          datadog&.event 'Flipper Feature Updated',
+                         "The feature flag `#{feature_name}` has been updated to #{action_string}.",
+                         source_type_name: 'flipper',
+                         tags: %W[env:#{ENV['RACK_ENV']}]
+
           redirect_to "/features/#{@feature.key}"
         end
       end

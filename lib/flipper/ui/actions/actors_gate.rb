@@ -40,6 +40,11 @@ module Flipper
             feature.disable_actor actor
           end
 
+          datadog&.event 'Flipper Feature Updated',
+                         "The feature flag `#{value}` had actor `#{value}` #{params['operation']}d.",
+                         source_type_name: 'flipper',
+                         tags: %W[env:#{ENV['RACK_ENV']}]
+
           redirect_to("/features/#{feature.key}")
         end
       end

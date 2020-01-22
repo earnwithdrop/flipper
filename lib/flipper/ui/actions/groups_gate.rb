@@ -33,6 +33,11 @@ module Flipper
               feature.disable_group value
             end
 
+            datadog&.event 'Flipper Feature Updated',
+                           "The feature flag `#{feature_name}` had group `#{value}` #{params['operation']}d.",
+                           source_type_name: 'flipper',
+                           tags: %W[env:#{ENV['RACK_ENV']}]
+
             redirect_to("/features/#{feature.key}")
           else
             error = Rack::Utils.escape("The group named #{value.inspect} has not been registered.")

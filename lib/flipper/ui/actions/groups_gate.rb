@@ -33,10 +33,12 @@ module Flipper
               feature.disable_group value
             end
 
-            datadog&.event 'Flipper Feature Updated',
-                           "The feature flag `#{feature_name}` had group `#{value}` #{params['operation']}d.",
-                           source_type_name: 'flipper',
-                           tags: %W[env:#{ENV['RACK_ENV']}]
+            instrument_update(
+              feature_flag_name: feature_name,
+              gate_name: 'group',
+              value: value
+              operation: params['operation']
+            )
 
             redirect_to("/features/#{feature.key}")
           else

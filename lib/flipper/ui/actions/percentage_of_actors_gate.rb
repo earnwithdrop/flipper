@@ -16,10 +16,12 @@ module Flipper
           begin
             feature.enable_percentage_of_actors params['value']
 
-            datadog&.event 'Flipper Feature Updated',
-                           "The feature flag `#{feature_name}` had percentage of actors gate updated to `#{params['value']}`.",
-                           source_type_name: 'flipper',
-                           tags: %W[env:#{ENV['RACK_ENV']}]
+            instrument_update(
+              feature_flag_name: feature_name,
+              gate_name: 'percentage_of_actors',
+              value: params['value'],
+              operation: 'enable'
+            )
           rescue ArgumentError => exception
             error = Rack::Utils.escape("Invalid percentage of actors value: #{exception.message}")
             redirect_to("/features/#{@feature.key}?error=#{error}")

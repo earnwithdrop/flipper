@@ -126,6 +126,21 @@ module Flipper
         Flipper::UI.configuration.dogstatsd
       end
 
+      def instrument_update(feature_flag_name:, gate_name:, value:, operation:)
+        datadog&.event 'Flipper Feature Updated',
+                       <<~TXT
+                         **Feature Flag**: *#{feature_flag_name}*
+
+                         **Gate**: *#{gate_name}*
+
+                         **Operation**: *#{operation}*
+
+                         **Value**: *#{value}*
+                       TXT
+                       source_type_name: 'flipper',
+                       tags: %W[env:#{ENV['RACK_ENV']}]
+      end
+
       # Public: Compiles a view and returns rack response with that as the body.
       #
       # name - The Symbol name of the view.

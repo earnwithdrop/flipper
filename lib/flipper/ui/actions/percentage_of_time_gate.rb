@@ -17,7 +17,7 @@ module Flipper
             feature.enable_percentage_of_time params['value']
 
             datadog&.event 'Flipper Feature Updated',
-                           "The feature flag `#{feature_name}` had percentage of time gate updated to `#{params['value']}`."
+                           "The feature flag `#{feature_name}` had percentage of time gate updated to `#{params['value']}`.",
                            source_type_name: 'flipper',
                            tags: %W[env:#{ENV['RACK_ENV']}]
           rescue ArgumentError => exception

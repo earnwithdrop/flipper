@@ -43,6 +43,11 @@ module Flipper
           feature = flipper[value]
           feature.add
 
+          datadog&.event 'Flipper Feature Created',
+                         "The feature flag `#{value}` was created.",
+                         source_type_name: 'flipper',
+                         tags: %W[env:#{ENV['RACK_ENV']}]
+
           redirect_to "/features/#{Rack::Utils.escape_path(value)}"
         end
       end

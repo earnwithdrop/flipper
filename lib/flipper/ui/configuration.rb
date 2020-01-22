@@ -10,7 +10,8 @@ module Flipper
                   :percentage_of_time
 
       attr_accessor :banner_text,
-                    :banner_class
+                    :banner_class,
+                    :dogstatsd
 
       # Public: If you set this, the UI will always have a first breadcrumb that
       # says "App" which points to this href. The href can be a path (ie: "/")
@@ -54,6 +55,7 @@ module Flipper
         @delete = Option.new("Danger Zone", "Deleting a feature removes it from the list of features and disables it for everyone.") # rubocop:disable Layout/LineLength
         @banner_text = nil
         @banner_class = 'danger'
+        @dogstatsd = nil
         @feature_creation_enabled = true
         @feature_removal_enabled = true
         @fun = true

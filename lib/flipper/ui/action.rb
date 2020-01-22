@@ -122,6 +122,10 @@ module Flipper
         throw :halt, response
       end
 
+      def datadog
+        Flipper::UI.configuration.dogstatsd
+      end
+
       # Public: Compiles a view and returns rack response with that as the body.
       #
       # name - The Symbol name of the view.

@@ -10,7 +10,6 @@ Gem::Specification.new do |gem|
   gem.authors       = ['John Nunemaker']
   gem.email         = ['nunemaker@gmail.com']
   gem.summary       = 'FeatureFlipper.com adapter for Flipper'
-  gem.description   = 'FeatureFlipper.com adapter for Flipper'
   gem.license       = 'MIT'
   gem.homepage      = 'https://github.com/jnunemaker/flipper'
 
@@ -18,7 +17,7 @@ Gem::Specification.new do |gem|
     'lib/flipper/version.rb',
   ]
   gem.files         = `git ls-files`.split("\n").select(&flipper_cloud_files) + extra_files
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_cloud_files)
+  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_cloud_files) # rubocop:disable Layout/LineLength
   gem.name          = 'flipper-cloud'
   gem.require_paths = ['lib']
   gem.version       = Flipper::VERSION

@@ -10,17 +10,16 @@ Gem::Specification.new do |gem|
   gem.authors       = ['John Nunemaker']
   gem.email         = ['nunemaker@gmail.com']
   gem.summary       = 'Redis adapter for Flipper'
-  gem.description   = 'Redis adapter for Flipper'
   gem.license       = 'MIT'
   gem.homepage      = 'https://github.com/jnunemaker/flipper'
 
-  gem.files         = `git ls-files`.split("\n").select(&flipper_redis_files) + ['lib/flipper/version.rb']
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_redis_files)
+  gem.files         = `git ls-files`.split("\n").select(&flipper_redis_files) + ['lib/flipper/version.rb'] # rubocop:disable Layout/LineLength
+  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_redis_files) # rubocop:disable Layout/LineLength
   gem.name          = 'flipper-redis'
   gem.require_paths = ['lib']
   gem.version       = Flipper::VERSION
   gem.metadata      = Flipper::METADATA
 
   gem.add_dependency 'flipper', "~> #{Flipper::VERSION}"
-  gem.add_dependency 'redis', '>= 2.2', '< 4.1.0'
+  gem.add_dependency 'redis', '>= 2.2', '< 5'
 end

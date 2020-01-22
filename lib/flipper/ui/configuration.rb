@@ -26,6 +26,15 @@ module Flipper
       # set to false, users won't be able to delete features from the UI.
       attr_accessor :feature_removal_enabled
 
+      # Public: Are you feeling lucky? Defaults to true. If set to false, users
+      # won't see a videoclip of Taylor Swift when there aren't any features
+      attr_accessor :fun
+
+      # Public: What should show up in the form to add actors. This can be
+      # different per application since flipper_id's can be whatever an
+      # application needs. Defaults to "a flipper id".
+      attr_accessor :add_actor_placeholder
+
       VALID_BANNER_CLASS_VALUES = %w(
         danger
         dark
@@ -40,13 +49,15 @@ module Flipper
       def initialize
         @actors = Option.new("Actors", "Enable actors using the form above.")
         @groups = Option.new("Groups", "Enable groups using the form above.")
-        @percentage_of_actors = Option.new("Percentage of Actors", "Percentage of actors functions independently of percentage of time. If you enable 50% of Actors and 25% of Time then the feature will always be enabled for 50% of users and occasionally enabled 25% of the time for everyone.") # rubocop:disable Metrics/LineLength
-        @percentage_of_time = Option.new("Percentage of Time", "Percentage of actors functions independently of percentage of time. If you enable 50% of Actors and 25% of Time then the feature will always be enabled for 50% of users and occasionally enabled 25% of the time for everyone.") # rubocop:disable Metrics/LineLength
-        @delete = Option.new("Danger Zone", "Deleting a feature removes it from the list of features and disables it for everyone.") # rubocop:disable Metrics/LineLength
+        @percentage_of_actors = Option.new("Percentage of Actors", "Percentage of actors functions independently of percentage of time. If you enable 50% of Actors and 25% of Time then the feature will always be enabled for 50% of users and occasionally enabled 25% of the time for everyone.") # rubocop:disable Layout/LineLength
+        @percentage_of_time = Option.new("Percentage of Time", "Percentage of actors functions independently of percentage of time. If you enable 50% of Actors and 25% of Time then the feature will always be enabled for 50% of users and occasionally enabled 25% of the time for everyone.") # rubocop:disable Layout/LineLength
+        @delete = Option.new("Danger Zone", "Deleting a feature removes it from the list of features and disables it for everyone.") # rubocop:disable Layout/LineLength
         @banner_text = nil
         @banner_class = 'danger'
         @feature_creation_enabled = true
         @feature_removal_enabled = true
+        @fun = true
+        @add_actor_placeholder = "a flipper id"
       end
 
       def banner_class=(value)

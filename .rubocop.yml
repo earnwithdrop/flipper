@@ -10,8 +10,8 @@ AllCops:
     - 'examples/**/*'
     - 'tmp/**/*'
     - 'bin/**/*'
-  TargetRubyVersion: 2.0
-  # DefaultFormatter: fuubar
+    - 'vendor/bundle/**/*'
+  TargetRubyVersion: 2.6
 Style/Alias:
   Enabled: false
 
@@ -33,22 +33,20 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
-  Exclude:
-    - '*.gemspec'
 
 Style/RegexpLiteral:
   EnforcedStyle: mixed
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
 RSpec/InstanceVariable:
   Enabled: false
 
-Style/AccessorMethodName:
-  Enabled: false
-
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false

@@ -1,6 +1,6 @@
 require 'forwardable'
 require 'flipper/ui/error'
-require 'flipper/ui/eruby'
+require 'erubi'
 require 'json'
 
 module Flipper
@@ -205,12 +205,8 @@ module Flipper
       # Private
       def view(name)
         path = views_path.join("#{name}.erb")
-
         raise "Template does not exist: #{path}" unless path.exist?
-
-        contents = path.read
-        compiled = Eruby.new(contents)
-        compiled.result proc {}.binding
+        eval(Erubi::Engine.new(path.read, escape: true).src) # rubocop:disable Security/Eval
       end
 
       # Internal: The path the app is mounted at.

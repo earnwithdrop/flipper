@@ -10,12 +10,11 @@ Gem::Specification.new do |gem|
   gem.authors       = ['John Nunemaker']
   gem.email         = ['nunemaker@gmail.com']
   gem.summary       = 'Mongo adapter for Flipper'
-  gem.description   = 'Mongo adapter for Flipper'
   gem.license       = 'MIT'
   gem.homepage      = 'https://github.com/jnunemaker/flipper'
 
-  gem.files         = `git ls-files`.split("\n").select(&flipper_mongo_files) + ['lib/flipper/version.rb']
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_mongo_files)
+  gem.files         = `git ls-files`.split("\n").select(&flipper_mongo_files) + ['lib/flipper/version.rb'] # rubocop:disable Layout/LineLength
+  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n").select(&flipper_mongo_files) # rubocop:disable Layout/LineLength
   gem.name          = 'flipper-mongo'
   gem.require_paths = ['lib']
   gem.version       = Flipper::VERSION

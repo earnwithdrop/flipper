@@ -37,14 +37,15 @@ YourRailsApp::Application.routes.draw do
 end
 ```
 
-If you'd like to lazy load flipper, you can pass a block instead:
+If you'd like to lazy load flipper, you can instead pass a block to initialize it:
 
 ```ruby
 # config/routes.rb
 YourRailsApp::Application.routes.draw do
   flipper_block = lambda {
     # some flipper initialization here, for example:
-    # YourRailsApp.flipper
+    adapter = Flipper::Adapters::Memory.new
+    Flipper.new(adapter)
   }
   mount Flipper::UI.app(flipper_block) => '/flipper'
 end
@@ -95,7 +96,7 @@ end
 # config/routes.rb
 
 constraints CanAccessFlipperUI do
-  mount Flipper::UI.app(flipper) => '/flipper'
+  mount Flipper::UI.app(Flipper) => '/flipper'
 end
 ```
 
@@ -167,6 +168,16 @@ By default the `environment` is set to an empty string so no banner will show. I
 The above configuration results in:
 
 ![configure](images/environment-banner.png)
+
+### Fun mode
+
+By default, Flipper UI displays a videoclip when there are no flags. The `fun` mode can be configured by using the `Flipper::UI.configure` block as seen below.
+
+```ruby
+Flipper::UI.configure do |config|
+  config.fun = false
+end
+```
 
 ## Contributing
 

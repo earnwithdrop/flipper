@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md mb-4 mb-md-0">
+    <div class="col-md mb-4 mb-lg-0">
       <div class="card">
         <h4 class="card-header"><%= Flipper::UI.configuration.percentage_of_actors.title %></h4>
         <div class="card-body">
@@ -60,7 +60,7 @@
             <div class="col">
               <form action="<%= script_name %>/features/<%= @feature.key %>/percentage_of_actors" method="post" class="form-inline">
                 <%== csrf_input_tag %>
-                <input type="text" name="value" <% if @feature.percentage_of_actors_value > 0 %>value="<%= @feature.percentage_of_actors_value %>"<% end %> placeholder="custom (ie: 26, 32, etc.)" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
+                <input type="text" name="value" <% if @feature.percentage_of_actors_value > 0 %>value="<%= @feature.percentage_of_actors_value %>"<% end %> placeholder="custom (26, 32, etc.)" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
                 <input type="submit" name="action" value="Enable" class="btn btn-light btn-sm">
               </form>
             </div>
@@ -98,7 +98,7 @@
             <div class="col">
               <form action="<%= script_name %>/features/<%= @feature.key %>/percentage_of_time" method="post" class="form-inline">
                 <%== csrf_input_tag %>
-                <input type="text" name="value" <% if @feature.percentage_of_time_value > 0 %>value="<%= @feature.percentage_of_time_value %>"<% end %> placeholder="custom (ie: 26, 32, etc.)" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
+                <input type="text" name="value" <% if @feature.percentage_of_time_value > 0 %>value="<%= @feature.percentage_of_time_value %>"<% end %> placeholder="custom (26, 32, etc.)" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
                 <input type="submit" name="action" value="Enable" class="btn btn-light btn-sm">
               </form>
             </div>
@@ -128,7 +128,7 @@
                 <form action="<%= script_name %>/features/<%= @feature.key %>/groups" method="post" class="form-inline">
                   <%== csrf_input_tag %>
                   <input type="hidden" name="operation" value="enable">
-                  <select name="value" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
+                  <select name="value" class="form-control form-control-sm mr-sm-2 mb-2 mb-sm-0">
                     <option value="">Select a group...</option>
                     <% @feature.disabled_groups.each do |group| %>
                       <option value="<%= group.name %>"><%= group.name %></option>
@@ -186,7 +186,7 @@
               <form action="<%= script_name %>/features/<%= @feature.key %>/actors" method="post" class="form-inline">
                 <%== csrf_input_tag %>
                 <input type="hidden" name="operation" value="enable">
-                <input type="text" name="value" placeholder="ie: User:6" class="form-control form-control-sm mr-sm-2 mb-2 mb-md-0">
+                <input type="text" name="value" placeholder="<%= Flipper::UI.configuration.add_actor_placeholder %>" class="form-control form-control-sm mr-sm-2 mb-2 mb-sm-0">
                 <input type="submit" value="Add Actor" class="btn btn-light btn-sm">
               </form>
             </div>
@@ -239,7 +239,7 @@
             <%= Flipper::UI.configuration.delete.description %>
           </p>
 
-          <form action="<%= script_name %>/features/<%= @feature.key %>" method="post" onsubmit="return confirm('Are you sure you want to remove <%= @feature.key %> from the list of features and disable it for everyone?')">
+          <form action="<%= script_name %>/features/<%= @feature.key %>" method="post" onsubmit="return confirm('Are you sure you want to remove this feature from the list of features and disable it for everyone?')">
             <%== csrf_input_tag %>
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" name="action" value="Delete" class="btn btn-danger" data-toggle="tooltip" title="Remove feature from list of features and disable it." data-placement="right">Delete</button>

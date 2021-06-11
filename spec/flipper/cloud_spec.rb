@@ -20,7 +20,11 @@ RSpec.describe Flipper::Cloud do
     end
 
     it 'returns Flipper::DSL instance' do
-      expect(@instance).to be_instance_of(Flipper::DSL)
+      expect(@instance).to be_instance_of(Flipper::Cloud::DSL)
+    end
+
+    it 'can read the cloud configuration' do
+      expect(@instance.cloud_configuration).to be_instance_of(Flipper::Cloud::Configuration)
     end
 
     it 'configures instance to use http adapter' do
@@ -36,7 +40,7 @@ RSpec.describe Flipper::Cloud do
 
     it 'sets correct token header' do
       headers = @http_client.instance_variable_get('@headers')
-      expect(headers['Feature-Flipper-Token']).to eq(token)
+      expect(headers['Flipper-Cloud-Token']).to eq(token)
     end
 
     it 'uses noop instrumenter' do
@@ -60,6 +64,12 @@ RSpec.describe Flipper::Cloud do
       expect(uri.scheme).to eq('https')
       expect(uri.host).to eq('www.fakeflipper.com')
       expect(uri.path).to eq('/sadpanda')
+    end
+  end
+
+  it 'can initialize with no token explicitly provided' do
+    with_modified_env "FLIPPER_CLOUD_TOKEN" => "asdf" do
+      expect(described_class.new).to be_instance_of(Flipper::Cloud::DSL)
     end
   end
 
@@ -103,5 +113,90 @@ RSpec.describe Flipper::Cloud do
         .with(hash_including(open_timeout: 1))
       described_class.new('asdf', open_timeout: 1)
     end
+  end
+
+  it 'can import' do
+    stub_request(:post, /www\.flippercloud\.io\/adapter\/features.*/).
+      with(headers: {
+          'Feature-Flipper-Token'=>'asdf',
+          'Flipper-Cloud-Token'=>'asdf',
+      }).to_return(status: 200, body: "{}", headers: {})
+
+    flipper = Flipper.new(Flipper::Adapters::Memory.new)
+
+    flipper.enable(:test)
+    flipper.enable(:search)
+    flipper.enable_actor(:stats, Flipper::Actor.new("jnunemaker"))
+    flipper.enable_percentage_of_time(:logging, 5)
+
+    cloud_flipper = Flipper::Cloud.new("asdf")
+
+    get_all = {
+      "logging" => {actors: Set.new, boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: "5"},
+      "search" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "stats" => {actors: Set["jnunemaker"], boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "test" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+    }
+
+    expect(flipper.adapter.get_all).to eq(get_all)
+    cloud_flipper.import(flipper)
+    expect(flipper.adapter.get_all).to eq(get_all)
+    expect(cloud_flipper.adapter.get_all).to eq(get_all)
+  end
+
+  it 'raises error for failure while importing' do
+    stub_request(:post, /www\.flippercloud\.io\/adapter\/features.*/).
+      with(headers: {
+          'Feature-Flipper-Token'=>'asdf',
+          'Flipper-Cloud-Token'=>'asdf',
+      }).to_return(status: 500, body: "{}")
+
+    flipper = Flipper.new(Flipper::Adapters::Memory.new)
+
+    flipper.enable(:test)
+    flipper.enable(:search)
+    flipper.enable_actor(:stats, Flipper::Actor.new("jnunemaker"))
+    flipper.enable_percentage_of_time(:logging, 5)
+
+    cloud_flipper = Flipper::Cloud.new("asdf")
+
+    get_all = {
+      "logging" => {actors: Set.new, boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: "5"},
+      "search" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "stats" => {actors: Set["jnunemaker"], boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "test" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+    }
+
+    expect(flipper.adapter.get_all).to eq(get_all)
+    expect { cloud_flipper.import(flipper) }.to raise_error(Flipper::Adapters::Http::Error)
+    expect(flipper.adapter.get_all).to eq(get_all)
+  end
+
+  it 'raises error for timeout while importing' do
+    stub_request(:post, /www\.flippercloud\.io\/adapter\/features.*/).
+      with(headers: {
+          'Feature-Flipper-Token'=>'asdf',
+          'Flipper-Cloud-Token'=>'asdf',
+      }).to_timeout
+
+    flipper = Flipper.new(Flipper::Adapters::Memory.new)
+
+    flipper.enable(:test)
+    flipper.enable(:search)
+    flipper.enable_actor(:stats, Flipper::Actor.new("jnunemaker"))
+    flipper.enable_percentage_of_time(:logging, 5)
+
+    cloud_flipper = Flipper::Cloud.new("asdf")
+
+    get_all = {
+      "logging" => {actors: Set.new, boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: "5"},
+      "search" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "stats" => {actors: Set["jnunemaker"], boolean: nil, groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+      "test" => {actors: Set.new, boolean: "true", groups: Set.new, percentage_of_actors: nil, percentage_of_time: nil},
+    }
+
+    expect(flipper.adapter.get_all).to eq(get_all)
+    expect { cloud_flipper.import(flipper) }.to raise_error(Net::OpenTimeout)
+    expect(flipper.adapter.get_all).to eq(get_all)
   end
 end

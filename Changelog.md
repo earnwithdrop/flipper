@@ -1,3 +1,61 @@
+## unreleased
+
+### Additions/Changes
+
+* Allow actors and time gates to deal with decimal percentages (https://github.com/jnunemaker/flipper/pull/492)
+* Change Flipper::Cloud::Middleware to receive webhooks at / in addition to /webhooks.
+
+## 0.20.3
+
+### Additions/Changes
+
+* Changed the internal structure of how the memory adapter stores things.
+
+## 0.20.2
+
+### Additions/Changes
+
+* Http adapter now raises error when enable/disable/add/remove/clear fail.
+* Cloud adapter sends some extra info like hostname, ruby version, etc. for debugging and decision making.
+
+## 0.20.1
+
+### Additions/Changes
+
+* Just a minor tweak to cloud webhook middleware to provide more debugging information about why a hook wasn't successful.
+
+## 0.20.0
+
+### Additions/Changes
+
+* Add support for webhooks to `Flipper::Cloud` (https://github.com/jnunemaker/flipper/pull/489).
+
+## 0.19.1
+
+### Additions/Changes
+
+* Bump rack-protection version to < 2.2 (https://github.com/jnunemaker/flipper/pull/487)
+* Add memoizer_options to Flipper::Api.app (https://github.com/jnunemaker/flipper/commit/174ad4bb94046a25c432d3c53fe1ff9f5a76d838)
+
+## 0.19.0
+
+### Additions/Changes
+
+* 100% of actors is now considered conditional. Feature#on?, Feature#conditional?, Feature#state would all be affected. See https://github.com/jnunemaker/flipper/issues/463 for more.
+* Several doc updates.
+
+## 0.18.0
+
+### Additions/Changes
+
+* Add support for feature descriptions to flipper-ui (https://github.com/jnunemaker/flipper/pull/461).
+* Remove rubocop (https://github.com/jnunemaker/flipper/pull/469).
+* flipper-ui redesign (https://github.com/jnunemaker/flipper/pull/470).
+* Removed support for ruby 2.4.
+* Added support for ruby 2.7.
+* Removed support for Rails 4.x.x.
+* Removed support for customizing actors, groups, % of actors and % of time text in flipper-ui in favor of automatic and more descriptive text.
+
 ## 0.17.2
 
 ### Additions/Changes
@@ -90,7 +148,7 @@
 
 ### Additions/Changes
 
-* Added rollout adapter documentation (https://github.com/jnunemaker/flipper/pull/328).  
+* Added rollout adapter documentation (https://github.com/jnunemaker/flipper/pull/328).
 
 ### Bug Fixes
 
